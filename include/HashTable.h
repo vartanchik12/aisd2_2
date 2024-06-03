@@ -86,6 +86,9 @@ public:
             if (current) {
                 cout << current->_key << ":";
             }
+            else {
+                continue;
+            }
             while (current) {
                 cout << " " << current->_value;
                 current = current->_next;
@@ -174,12 +177,19 @@ public:
     }
 };
 
+
 HashTable<int, int> countDuplicates(const vector<int>& arr) {
     size_t size = arr.size();
     HashTable<int, int> ht(size);
 
     for (const auto& num : arr) {
-        ht.insert_or_assign(num, ht.count(num) + 1);
+        int* count = ht.search(num);
+        if (count) {
+            ht.insert_or_assign(num, *count + 1);
+        }
+        else {
+            ht.insert(num, 1);
+        }
     }
 
     return ht;
